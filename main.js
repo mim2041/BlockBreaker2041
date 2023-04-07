@@ -119,6 +119,17 @@ function moveBall(){
         ball.dy *= -1;
     }
 
+    if (ball.y + ball.size >= paddle.y &&
+        ball.x + ball.size >= paddle.x &&
+        ball.x - ball.size <= paddle.x + paddle.w &&
+        ball.dy > 0) {
+            ball.dy = -ball.dy;
+
+            // Adjust the ball's dx based on where it hit the paddle
+            let paddleCenter = paddle.x + (paddle.w / 2);
+            let ballOffset = ball.x - paddleCenter;
+            ball.dx = ballOffset * 0.2;
+        }
     // ball.x = 0
     // ball.dx = 4;
     // if(ball.y - ball.size < 0){
