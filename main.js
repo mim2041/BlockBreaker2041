@@ -108,13 +108,15 @@ function moveBall(){
 
     //Surrounding wall collision detection(x-axis)
     //right and left walls
+
+    
     if(ball.y + ball.size > canvas.height || ball.y - ball.size < 0){
         ball.dy *= -1;
     }
+
     if(ball.x + ball.size > canvas.width || ball.x - ball.size < 0){
         ball.dx *= -1;
     }
-
     //Surrounding wall collision detection(y-axis)
     //top and bottom walls
     
@@ -194,9 +196,9 @@ update();
 //Targetting the right and left arrow keys
 function keyDown(e){
     if(e.key === 'Right' || e.key === 'ArrowRight'){
-
+        paddle.dx = paddle.speed;
     } else if(e.key === 'Left' || e.key === 'ArrowLeft'){
-
+        paddle.dx = -paddle.speed;
     } 
 }
 
@@ -204,7 +206,7 @@ function keyDown(e){
 function keyUp(e){
     // console.log(e.key);
     if(e.key === 'Right' || e.key === 'ArrowRight' || e.key === 'Left' || e.key === 'ArrowLeft'){
-
+        paddle.dx = 0;
     } 
 }
 
