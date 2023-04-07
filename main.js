@@ -130,15 +130,7 @@ function moveBall(){
             let ballOffset = ball.x - paddleCenter;
             ball.dx = ballOffset * 0.2;
         }
-    // ball.x = 0
-    // ball.dx = 4;
-    // if(ball.y - ball.size < 0){
-    //     ball.dy *= -1;
-    // }
-
-    // if(ball.y + ball.size > paddle.width){
-    //     ball.dy *= -1;
-    // }
+    
 
     if(ball.x + ball.size > canvas.width || ball.x - ball.size < 0){
         ball.dx *= -1;
@@ -152,7 +144,28 @@ function moveBall(){
     
 
     //Paddle collision functionality
-    
+    if(ball.y + ball.size >= paddle.y && ball.x >= paddle.x && ball.x <= paddle.x + paddle.w){
+        ball.dy *= -1;
+    }
+
+    //Block collision functionality
+    blocks.forEach(column => {
+        column.forEach(block => {
+            if(block.visible){
+                if(ball.x - ball.size > block.x && ball.x + ball.size < block.x + block.w && ball.y + ball.size > block.y && ball.y - ball.size < block.y + block.h){
+                    ball.dy *= -1;
+                    block.visible = false;
+                    increaseScore();
+                }
+            }
+        });
+    });
+
+    //Lose on missing paddle
+    if(ball.y + ball.size > canvas.height){
+        isGameOver = true;
+        showGameOverText();
+    }
 
     //Block collision functionality
     blocks.forEach(column => {
@@ -249,14 +262,4 @@ document.addEventListener("keydown", function(event) {
         
     }
   });
-  
-
-
-//   let gameLoop = setInterval(update, 1000);
-
-//   document.addEventListener("keydown", function(event) {
-//     if (event.key === "esc") {
-//       clearInterval(gameLoop); // pause the game loop
-//     }
-//   });
   
