@@ -94,8 +94,13 @@ function movePaddle(){
 
     //Surrounding wall detection
     //To the right side
-    
+    if(paddle.x + paddle.w > canvas.width){
+        paddle.x = canvas.width - paddle.w;
+    }
 
+    if(paddle.x < 0){
+        paddle.x = 0;
+    }
     //Surrounding wall detection
     //To the left side
     
@@ -114,9 +119,23 @@ function moveBall(){
         ball.dy *= -1;
     }
 
+    // ball.x = 0
+    // ball.dx = 4;
+    // if(ball.y - ball.size < 0){
+    //     ball.dy *= -1;
+    // }
+
+    // if(ball.y + ball.size > paddle.width){
+    //     ball.dy *= -1;
+    // }
+
     if(ball.x + ball.size > canvas.width || ball.x - ball.size < 0){
         ball.dx *= -1;
     }
+
+    // if(ball.x - ball.size < 0){
+    //     ball.dx *= -1;
+    // }
     //Surrounding wall collision detection(y-axis)
     //top and bottom walls
     
@@ -214,5 +233,19 @@ function keyUp(e){
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
 
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        
+    }
+  });
+  
 
 
+//   let gameLoop = setInterval(update, 1000);
+
+//   document.addEventListener("keydown", function(event) {
+//     if (event.key === "esc") {
+//       clearInterval(gameLoop); // pause the game loop
+//     }
+//   });
+  
