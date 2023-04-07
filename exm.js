@@ -90,11 +90,18 @@ function drawScore(){
 
 //Function to move paddle on the canvas
 function movePaddle(){
-    paddle.x += paddle.dx;
+    // paddle.x += paddle.dx;
 
     //Surrounding wall detection
     //To the right side
+    function keyDown(e){
+        if(e.key === 'Right' || e.key === 'ArrowRight'){
+            paddle.x += paddle.dx;
     
+        } else if(e.key === 'Left' || e.key === 'ArrowLeft'){
+            paddle.x -= paddle.dx;
+        } 
+    }
 
     //Surrounding wall detection
     //To the left side
@@ -108,15 +115,8 @@ function moveBall(){
 
     //Surrounding wall collision detection(x-axis)
     //right and left walls
+    isGameOver(true)
 
-    
-    if(ball.y + ball.size > canvas.height || ball.y - ball.size < 0){
-        ball.dy *= -1;
-    }
-
-    if(ball.x + ball.size > canvas.width || ball.x - ball.size < 0){
-        ball.dx *= -1;
-    }
     //Surrounding wall collision detection(y-axis)
     //top and bottom walls
     
@@ -135,7 +135,8 @@ function moveBall(){
 
     //Lose on missing paddle
     if(ball.y + ball.size > canvas.height){
-        
+        ball.x -= ball.dx;
+        ball.y -= ball.dy;
     }
 }
 
@@ -154,15 +155,17 @@ function showAllBlocks(){
 }
 
 function showGamePauseText(){
-    
+    alert("Game paused")
 }
 
 function showLevelCompleteText(){
-    
+    if(ball.y + ball.size > canvas.height){
+        showGameOverText();
+    }
 }
 
 function showGameOverText(){
-    
+    alert("Game Over!!");
 }
 // Function called to draw all the canvas elements
 function draw(){
@@ -183,11 +186,25 @@ function update(){
     draw();
 
     screen = requestAnimationFrame(update);
-    if (score == (blockColumnCount*blockRowCount)) {
+    if (isGameOver) {
+        showGameOverText();
+        restartBtn.style.visibility = 'visible';
+        cancelAnimationFrame(screen);
+      } 
+      
+      else if (score == blockColumnCount * blockRowCount) {
+        showLevelCompleteText();
+        restartBtn.style.visibility = 'visible';
+        cancelAnimationFrame(screen);
+      }
+    // if(isGameOver){
+    //     showGameOverText
+    // }
+    // if (score == (blockColumnCount*blockRowCount)) {
         
-    }else if(isGameOver){
+    // }else if(isGameOver){
         
-    }
+    // }
 }
 
 update();
@@ -196,9 +213,10 @@ update();
 //Targetting the right and left arrow keys
 function keyDown(e){
     if(e.key === 'Right' || e.key === 'ArrowRight'){
-        paddle.dx = paddle.speed;
+        paddle.x += paddle.dx;
+
     } else if(e.key === 'Left' || e.key === 'ArrowLeft'){
-        paddle.dx = -paddle.speed;
+        paddle.x -= paddle.dx;
     } 
 }
 
@@ -206,13 +224,10 @@ function keyDown(e){
 function keyUp(e){
     // console.log(e.key);
     if(e.key === 'Right' || e.key === 'ArrowRight' || e.key === 'Left' || e.key === 'ArrowLeft'){
-        paddle.dx = 0;
+        movePaddle()
     } 
 }
 
 //Keyboard event handlers
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
-
-
-
